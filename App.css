@@ -1,0 +1,511 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+  --bg-void: #030810;
+  --bg-deep: #060d1a;
+  --bg-panel: #0a1628;
+  --bg-card: #0d1f38;
+  --bg-hover: #112540;
+  --border: rgba(0, 180, 255, 0.12);
+  --border-bright: rgba(0, 180, 255, 0.3);
+
+  --accent-cyan: #00c8ff;
+  --accent-cyan-dim: rgba(0, 200, 255, 0.15);
+  --accent-cyan-glow: rgba(0, 200, 255, 0.4);
+
+  --status-critical: #ff2d55;
+  --status-critical-glow: rgba(255, 45, 85, 0.5);
+  --status-warning: #ffb800;
+  --status-warning-glow: rgba(255, 184, 0, 0.5);
+  --status-normal: #00e676;
+  --status-normal-glow: rgba(0, 230, 118, 0.4);
+  --status-info: #00c8ff;
+
+  --text-primary: #e8f4ff;
+  --text-secondary: rgba(200, 225, 255, 0.6);
+  --text-dim: rgba(200, 225, 255, 0.3);
+
+  --topbar-h: 56px;
+  --bottombar-h: 44px;
+  --sidebar-w: 320px;
+  --panel-w: 300px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: 'Vazirmatn', sans-serif;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  overflow: hidden;
+  direction: rtl;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: calc(100vh - var(--topbar-h) - var(--bottombar-h));
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── SCROLLBAR ─── */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 2px;
+}
+
+/* ─── GLASS PANEL ─── */
+
+.glass-panel {
+  background: rgba(6, 13, 26, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+/* ─── ANIMATIONS ─── */
+
+@keyframes pulse-critical {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--status-critical-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+@keyframes pulse-warning {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--status-warning-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.4;
+  }
+
+  90% {
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotate-ring {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── LOGIN PAGE ─── */
+
+.login-page {
+  min-height: 100vh;
+  width: 100vw;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0, 200, 255, 0.12), transparent 28%),
+    radial-gradient(circle at 80% 70%, rgba(255, 45, 85, 0.08), transparent 26%),
+    linear-gradient(135deg, var(--bg-void), var(--bg-deep));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  direction: rtl;
+}
+
+.login-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 200, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 200, 255, 0.04) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle, black 35%, transparent 75%);
+  pointer-events: none;
+}
+
+.login-scan-line {
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 100%;
+  height: 140px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 200, 255, 0.08),
+    transparent
+  );
+  animation: scan-line 5s linear infinite;
+  pointer-events: none;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+  background: rgba(6, 13, 26, 0.92);
+  border: 1px solid var(--border-bright);
+  border-radius: 26px;
+  padding: 34px;
+  box-shadow:
+    0 0 40px rgba(0, 200, 255, 0.12),
+    0 24px 80px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(18px);
+  position: relative;
+  z-index: 2;
+  animation: slideUp 0.5s ease;
+}
+
+.login-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  border: 1px solid rgba(0, 200, 255, 0.08);
+  pointer-events: none;
+}
+
+.login-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.login-logo-ring {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan);
+  font-weight: 800;
+  font-size: 22px;
+  box-shadow:
+    0 0 22px var(--accent-cyan-glow),
+    inset 0 0 18px rgba(0, 200, 255, 0.1);
+  position: relative;
+  font-family: 'Vazirmatn', sans-serif;
+}
+
+.login-logo-ring::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0, 200, 255, 0.35);
+  animation: rotate-ring 10s linear infinite;
+}
+
+.login-card h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 30px;
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+.login-card h2 {
+  margin: 8px 0 18px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.login-status {
+  margin: 0 auto 26px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-cyan);
+  background: var(--accent-cyan-dim);
+  border: 1px solid var(--border-bright);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.login-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status-normal);
+  box-shadow: 0 0 12px var(--status-normal-glow);
+  animation: blink 1.4s infinite;
+}
+
+.login-card label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border-bright);
+  border-radius: 14px;
+  font-size: 15px;
+  box-sizing: border-box;
+  background: rgba(3, 8, 16, 0.8);
+  color: var(--text-primary);
+  outline: none;
+  font-family: 'Vazirmatn', sans-serif;
+  transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.login-card input::placeholder {
+  color: var(--text-dim);
+}
+
+.login-card input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.12);
+  background: rgba(10, 22, 40, 0.95);
+}
+
+.login-card button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent-cyan), #006dff);
+  color: #00111f;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Vazirmatn', sans-serif;
+  box-shadow: 0 0 24px rgba(0, 200, 255, 0.25);
+  transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-card button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 32px rgba(0, 200, 255, 0.36);
+}
+
+.login-card button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-error {
+  color: #ffd6df;
+  background: rgba(255, 45, 85, 0.14);
+  border: 1px solid rgba(255, 45, 85, 0.35);
+  padding: 11px 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.login-footer {
+  margin-top: 18px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.loading-screen {
+  min-height: 100vh;
+  width: 100vw;
+  background: var(--bg-void);
+  color: var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  direction: rtl;
+}
+
+/* ─── LOGOUT INSIDE SIDEBAR ─── */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.logout-sidebar-wrap {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.logout-button {
+  width: 100%;
+  background: rgba(255, 45, 85, 0.12);
+  color: #ffd6df;
+  border: 1px solid rgba(255, 45, 85, 0.35);
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Vazirmatn', sans-serif;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.logout-button:hover {
+  background: rgba(255, 45, 85, 0.22);
+  box-shadow: 0 0 18px rgba(255, 45, 85, 0.22);
+  transform: translateY(-1px);
+}
+
+/* ─── LEAFLET ZOOM CONTROL FIX ─── */
+
+.leaflet-control-container {
+  direction: ltr;
+}
+
+.leaflet-left {
+  left: 14px !important;
+}
+
+.leaflet-bottom {
+  bottom: 58px !important;
+}
+
+.leaflet-control-zoom {
+  margin: 0 !important;
+  border: 1px solid var(--border-bright) !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  background: rgba(6, 13, 26, 0.94) !important;
+  box-shadow:
+    0 0 18px rgba(0, 200, 255, 0.18),
+    0 12px 30px rgba(0, 0, 0, 0.45) !important;
+}
+
+.leaflet-control-zoom a {
+  width: 46px !important;
+  height: 42px !important;
+  line-height: 39px !important;
+  background: rgba(10, 22, 40, 0.96) !important;
+  color: var(--accent-cyan) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  font-size: 30px !important;
+  font-weight: 800 !important;
+  text-shadow: 0 0 10px var(--accent-cyan-glow) !important;
+  font-family: Arial, sans-serif !important;
+}
+
+.leaflet-control-zoom a:last-child {
+  border-bottom: none !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: rgba(0, 200, 255, 0.16) !important;
+  color: #ffffff !important;
+}
+
+/* ─── MOVE MAP LABEL AWAY FROM ZOOM BUTTONS ─── */
+
+.map-location-label,
+.location-label,
+.map-label {
+  bottom: 118px !important;
+  left: 18px !important;
+  z-index: 500 !important;
+}
+
+/* Falls der Text als Leaflet Attribution kommt */
+.leaflet-control-attribution {
+  display: none !important;
+}
